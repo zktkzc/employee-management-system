@@ -44,6 +44,9 @@ public:
 	// 初始化员工
 	void initEmp();
 
+	// 显示职工
+	void showEmp();
+
 	// 析构函数
 	~WorkerManager();
 };
