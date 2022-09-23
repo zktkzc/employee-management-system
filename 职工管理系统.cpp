@@ -2,6 +2,7 @@
 #include "WorkerManager.h"
 #include"Worker.h"
 #include"Employee.h"
+#include"Boss.h"
 using namespace std;
 
 
