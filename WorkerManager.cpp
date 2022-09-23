@@ -2,9 +2,56 @@
 
 WorkerManager::WorkerManager()
 {
-	// 初始化属性
-	this->m_EmpNum = 0;
-	this->m_EmpArray = NULL;
+	// 文件不存在
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+	if (!ifs.is_open())
+	{
+		// 文件不存在
+		cout << "文件不存在" << endl;
+
+		// 初始化属性
+		this->m_EmpNum = 0;
+		this->m_EmpArray = NULL;
+		// 初始化文件是否为空
+		this->m_FileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
+	// 文件存在，但数据为空
+	char ch;
+	ifs >> ch;
+	if (ifs.eof())
+	{
+		// 文件为空
+		cout << "文件为空" << endl;
+		// 初始化属性
+		this->m_EmpNum = 0;
+		this->m_EmpArray = NULL;
+		// 初始化文件是否为空
+		this->m_FileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
+	// 文件并且记录数据
+	int num = this->getEmpNum();
+	cout << "职工的人数为：" << num << "人" << endl;
+	this->m_EmpNum = num;
+
+	// 开辟空间
+	this->m_EmpArray = new Worker * [this->m_EmpNum];
+	// 将文件中的数据存到数组中
+	this->initEmp();
+
+	// 测试代码
+	//for (int i = 0; i < this->m_EmpNum; i++)
+	//{
+	//	cout << "职工编号：" << this->m_EmpArray[i]->m_Id << " "
+	//		<< "职工姓名：" << this->m_EmpArray[i]->m_Name << " "
+	//		<< "部门编号：" << this->m_EmpArray[i]->m_DeptId << endl;
+	//}
 }
 
 void WorkerManager::ShowMenu()
@@ -101,6 +148,9 @@ void WorkerManager::addEmp()
 		// 更新新的职工人数
 		this->m_EmpNum = newSize;
 
+		// 更新职工不为空的标志
+		this->m_FileIsEmpty = false;
+
 		cout << "成功添加" << addNum << "名新职工" << endl;
 
 		// 保存数据到文件中
@@ -131,6 +181,61 @@ void WorkerManager::save()
 
 	// 关闭文件
 	ofs.close();
+}
+
+// 统计文件中的人数
+int WorkerManager::getEmpNum()
+{
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	int id;
+	string name;
+	int dId;
+
+	int num = 0;
+	while (ifs >> id && ifs >> name && ifs >> dId)
+	{
+		// 统计人数的变量
+		num++;
+	}
+	return num;
+}
+
+// 初始化员工
+void WorkerManager::initEmp()
+{
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	int id;
+	string name;
+	int dId;
+
+	int index = 0;
+	while (ifs >> id && ifs >> name && ifs >> dId)
+	{
+		Worker* worker = NULL;
+		if (dId == 1)
+		{
+			// 普通员工
+			worker = new Employee(id, name, dId);
+		}
+		else if (dId == 2)
+		{
+			// 经理
+			worker = new Manager(id, name, dId);
+		}
+		else
+		{
+			// 总裁
+			worker = new Boss(id, name, dId);
+		}
+		this->m_EmpArray[index] = worker;
+		index++;
+	}
+
+	ifs.close();
 }
 
 WorkerManager::~WorkerManager()

@@ -29,11 +29,20 @@ public:
 	// 职工数组指针
 	Worker** m_EmpArray;
 
+	//标志文件是否为空
+	bool m_FileIsEmpty;
+
 	// 添加职工
 	void addEmp();
 
 	// 保存文件
 	void save();
+
+	// 统计文件中的人数
+	int getEmpNum();
+
+	// 初始化员工
+	void initEmp();
 
 	// 析构函数
 	~WorkerManager();
