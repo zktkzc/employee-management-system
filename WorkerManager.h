@@ -1,9 +1,12 @@
 #pragma once // 防止头文件重复包含
 #include<iostream> // 包含输入输出流头文件
+#include<fstream>
 #include"Worker.h"
 #include"Employee.h"
 #include"Manager.h"
 #include"Boss.h"
+
+#define FILENAME "emFile.txt"
 
 using namespace std; // 使用标准命名空间
 
@@ -28,6 +31,9 @@ public:
 
 	// 添加职工
 	void addEmp();
+
+	// 保存文件
+	void save();
 
 	// 析构函数
 	~WorkerManager();

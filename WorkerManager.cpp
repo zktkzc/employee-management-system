@@ -102,6 +102,9 @@ void WorkerManager::addEmp()
 		this->m_EmpNum = newSize;
 
 		cout << "成功添加" << addNum << "名新职工" << endl;
+
+		// 保存数据到文件中
+		this->save();
 	}
 	else
 	{
@@ -112,7 +115,29 @@ void WorkerManager::addEmp()
 	system("cls");
 }
 
+// 保存文件
+void WorkerManager::save()
+{
+	ofstream ofs;
+	ofs.open(FILENAME, ios::out); // 用输出的方式打开文件 ——写文件
+
+	// 将每个人的数据写入到文件中
+	for (int i = 0; i < this->m_EmpNum; i++)
+	{
+		ofs << this->m_EmpArray[i]->m_Id << " "
+			<< this->m_EmpArray[i]->m_Name << " "
+			<< this->m_EmpArray[i]->m_DeptId << endl;
+	}
+
+	// 关闭文件
+	ofs.close();
+}
+
 WorkerManager::~WorkerManager()
 {
-
+	if (this->m_EmpArray != NULL)
+	{
+		delete[] this->m_EmpArray;
+		this->m_EmpArray = NULL;
+	}
 }
