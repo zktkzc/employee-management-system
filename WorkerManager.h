@@ -59,6 +59,9 @@ public:
 	// 查找职工
 	void findEmp();
 
+	// 按照职工编号进行排序
+	void sortEmp();
+
 	// 析构函数
 	~WorkerManager();
 };
