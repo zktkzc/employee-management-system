@@ -33,6 +33,7 @@ int main() {
 			wm.showEmp();
 			break;
 		case 3: //删除职工
+			wm.delEmp();
 			break;
 		case 4: //修改职工
 			break;

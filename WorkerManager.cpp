@@ -82,7 +82,7 @@ void WorkerManager::ExitSystem()
 void WorkerManager::addEmp()
 {
 	cout << "请输入添加职工的数量：" << endl;
-	int addNum;
+	int addNum = 0;
 	cin >> addNum;
 	if (addNum > 0)
 	{
@@ -199,6 +199,7 @@ int WorkerManager::getEmpNum()
 		// 统计人数的变量
 		num++;
 	}
+	ifs.close();
 	return num;
 }
 
@@ -256,6 +257,55 @@ void WorkerManager::showEmp()
 	}
 	system("pause");
 	system("cls");
+}
+
+// 删除职工
+void WorkerManager::delEmp()
+{
+	if (this->m_FileIsEmpty)
+	{
+		cout << "文件不存在或记录为空" << endl;
+	}
+	else
+	{
+		cout << "请输入想要删除的职工编号：" << endl;
+		int id = 0;
+		cin >> id;
+		int res = this->isExist(id);
+		if (res != -1)
+		{
+			for (int i = res; i < this->m_EmpNum-1; i++)
+			{
+				this->m_EmpArray[i] = this->m_EmpArray[i + 1];
+			}
+			this->m_EmpNum--; // 更新数组中记录的人员个数
+			// 数据同步更新到文件中
+			this->save();
+			cout << "删除成功！" << endl;
+		}
+		else
+		{
+			cout << "删除失败，未找到该职工" << endl;
+		}
+		system("pause");
+		system("cls");
+	}
+}
+
+// 判断职工是否存在
+int WorkerManager::isExist(int id)
+{
+	int index = -1;
+	for (int i = 0; i < this->m_EmpNum; i++)
+	{
+		if (this->m_EmpArray[i]->m_Id == id)
+		{
+			// 找到职工
+			index = 1;
+			break;
+		}
+	}
+	return index;
 }
 
 WorkerManager::~WorkerManager()
