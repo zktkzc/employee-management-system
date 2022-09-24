@@ -308,6 +308,71 @@ int WorkerManager::isExist(int id)
 	return index;
 }
 
+// 修改职工
+void WorkerManager::modEmp()
+{
+	if (this->m_FileIsEmpty)
+	{
+		cout << "文件不存在或记录为空" << endl;
+	}
+	else
+	{
+		cout << "请输入要修改的职工编号：" << endl;
+		int id;
+		cin >> id;
+
+		int res = this->isExist(id);
+		if (res!= -1)
+		{
+			// 找到职工
+			delete this->m_EmpArray[res];
+
+			int newId = 0;
+			string newName = " ";
+			int newDId = 0;
+
+			cout << "查到id为" << id << "号的职工，请输入新的职工编号：" << endl;
+			cin >> newId;
+			cout << "请输入新的职工姓名：" << endl;
+			cin >> newName;
+			cout << "请输入新的部门编号：" << endl;
+			cout << "1、普通职工" << endl;
+			cout << "2、经理" << endl;
+			cout << "3、总裁" << endl;
+			cin >> newDId;
+
+			Worker* worker = NULL;
+			if (newDId == 1)
+			{
+				// 普通员工
+				worker = new Employee(newId, newName, newDId);
+			}
+			else if (newDId == 2)
+			{
+				// 经理
+				worker = new Manager(newId, newName, newDId);
+			}
+			else
+			{
+				// 总裁
+				worker = new Boss(newId, newName, newDId);
+			}
+			this->m_EmpArray[res] = worker;
+			
+			cout << "修改成功！" << endl;
+
+			// 保存到文件中
+			this->save();
+		}
+		else
+		{
+			cout << "修改失败，查无此人" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
 WorkerManager::~WorkerManager()
 {
 	if (this->m_EmpArray != NULL)
