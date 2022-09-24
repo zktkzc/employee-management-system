@@ -373,6 +373,74 @@ void WorkerManager::modEmp()
 	system("cls");
 }
 
+// 查找职工
+void WorkerManager::findEmp()
+{
+	if (this->m_FileIsEmpty)
+	{
+		cout << "文件不存在或记录为空" << endl;
+	}
+	else
+	{
+		cout << "请输入查找的方式：" << endl;
+		cout << "1、按照职工编号查找" << endl;
+		cout << "2、按照职工姓名查找" << endl;
+		int select = 0;
+		cin >> select;
+		if (select == 1)
+		{
+			// 按照职工编号查找
+			int id;
+			cout << "请输入查找的职工编号：" << endl;
+			cin >> id;
+			int res = isExist(id);
+			if (res != -1)
+			{
+				// 找到职工
+				cout << "查找成功，该职工的信息如下：" << endl;
+				this->m_EmpArray[res]->showInfo();
+			}
+			else
+			{
+				cout << "查找失败，查无此人" << endl;
+			}
+		}
+		else if (select == 2)
+		{
+			// 按照职工姓名查找
+			string name;
+			cout << "请输入要查找的职工姓名：" << endl;
+			cin >> name;
+
+			// 判断是否找到的标志
+			bool flag = false; // 默认未找到
+
+			for (int i = 0; i < this->m_EmpNum; i++)
+			{
+				if (this->m_EmpArray[i]->m_Name == name)
+				{
+					flag = true;
+
+					cout << "查找成功，职工编号为：" << this->m_EmpArray[i]->m_Id << endl;
+					cout << "职工信息如下：" << endl;
+					this->m_EmpArray[i]->showInfo();
+				}
+			}
+			if (flag == false)
+			{
+				cout << "查找失败，查无此人" << endl;
+			}
+		}
+		else
+		{
+			cout << "输入选项有误，请重新输入！" << endl;
+		}
+	}
+
+	system("pause");
+	system("cls");
+}
+
 WorkerManager::~WorkerManager()
 {
 	if (this->m_EmpArray != NULL)
