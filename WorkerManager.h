@@ -62,6 +62,9 @@ public:
 	// 按照职工编号进行排序
 	void sortEmp();
 
+	// 清空数据
+	void cleanFile();
+
 	// 析构函数
 	~WorkerManager();
 };
